@@ -13,6 +13,10 @@ Resources:
           Properties:
             Path: /getazs
             Method: ANY
+      Environment:
+        Variables:
+          REGION: us-east-1
+        
         Stream:
           Type: DynamoDB
           Properties:
@@ -32,6 +36,4 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-    Environment:
-        Variables:
-           REGION: us-east-1
+    
