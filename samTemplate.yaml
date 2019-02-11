@@ -5,27 +5,27 @@ Resources:
     Type: 'AWS::DynamoDB::Table'
     Properties:
       AttributeDefinitions:
-        - AttributeName: id
+        - AttributeName: EmailID
           AttributeType: S
-        - AttributeName: version
-          AttributeType: 'N'
+        - AttributeName: BloodGroup
+          AttributeType: S
+        - AttributeName: Designation
+          AttributeType: S
+        - AttributeName: FirstName
+          AttributeType: S 
+        - AttributeName: LastName
+          AttributeType: S  
       KeySchema:
-        - AttributeName: id
+        - AttributeName: EmailID
           KeyType: HASH
-        - AttributeName: version
-          KeyType: RANGE
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
-      StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
   newlambdaserverless:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: newlambdaserverless.handler
       Runtime: nodejs6.10
       CodeUri: s3://staticcontentforsam/serverless-webapp-master.zip
-      Policies: []
+      Role: 'arn:aws:iam::896715882735:role/MyLambdaRole'
+      
       Events:
         Tablet1:
           Type: DynamoDB
