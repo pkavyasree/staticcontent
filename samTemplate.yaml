@@ -1,41 +1,35 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
+Transform: 'AWS::Serverless-2016-10-31'
 Resources:
-  TableAlerter:
-    Type: AWS::Serverless::Function
+  newtable:
+    Type: 'AWS::DynamoDB::Table'
     Properties:
-      Handler: index.handler
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: version
+          AttributeType: 'N'
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: version
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+  newlambdaserverless:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: newlambdaserverless.handler
       Runtime: nodejs6.10
       CodeUri: s3://staticcontentforsam/serverless-webapp-master.zip
+      Policies: []
       Events:
-        getAZsAPI:
-          Type: Api
-          Properties:
-            Path: /getazs
-            Method: ANY
-      Environment:
-        Variables:
-          REGION: us-east-1
-        
-        Stream:
+        Tablet1:
           Type: DynamoDB
           Properties:
-            Stream: !GetAtt Message.StreamArn
-            BatchSize: 100
-            StartingPosition: TRIM_HORIZON   
-     Resources:
-        NotesTable:
-        Type: AWS::DynamoDB::Table
-        Properties:
-        TableName: Message
-        AttributeDefinitions:
-           - AttributeName: userId
-             AttributeType: S
-           - AttributeName: noteId
-             AttributeType: S
-        KeySchema:
-          - AttributeName: userId
-            KeyType: HASH
-          - AttributeName: noteId
-            KeyType: RANGE
-     
+            Stream: !GetAtt newtable.StreamArn
+            StartingPosition: TRIM_HORIZON
+            BatchSize: 10
