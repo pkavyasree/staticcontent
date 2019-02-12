@@ -4,7 +4,7 @@ Resources:
   newlambdaserverless:
      Type: 'AWS::Serverless::Function'
      Properties:
-     Handler: newlambdaserverless.handler
+     Handler: lambda_function.lambda_handler
      Runtime: nodejs6.10
      CodeUri: s3://staticcontentforsam/serverless-webapp-master.zip
      Role: 'arn:aws:iam::896715882735:role/MyLambdaRole'    
