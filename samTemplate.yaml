@@ -1,23 +1,19 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Resources:
-  newtable:
+ myHelloTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
+      TableName: myHelloTable
       AttributeDefinitions:
-        - AttributeName: EmailID
+        - AttributeName: itemId
           AttributeType: S
-        - AttributeName: BloodGroup
-          AttributeType: S
-        - AttributeName: Designation
-          AttributeType: S
-        - AttributeName: FirstName
-          AttributeType: S 
-        - AttributeName: LastName
-          AttributeType: S  
       KeySchema:
-        - AttributeName: EmailID
+        - AttributeName: itemId
           KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
    newlambdaserverless:
      Type: 'AWS::Serverless::Function'
      Properties:
