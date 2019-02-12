@@ -1,13 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Resources:
-  newlambdaserverless:
-    Type: 'AWS::Serverless::Function'
-    Properties:
-      Handler: newlambdaserverless.handler
-      Runtime: nodejs6.10
-      CodeUri: s3://staticcontentforsam/serverless-webapp-master.zip
-      Role: 'arn:aws:iam::896715882735:role/MyLambdaRole'
   newtable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
@@ -25,10 +18,16 @@ Resources:
       KeySchema:
         - AttributeName: EmailID
           KeyType: HASH
-      Events:
-        Tablet1:
-          Type: DynamoDB
-          Properties:
-            Stream: !GetAtt newtable.StreamArn
-            StartingPosition: TRIM_HORIZON
-            BatchSize: 10
+   newlambdaserverless:
+     Type: 'AWS::Serverless::Function'
+     Properties:
+     Handler: newlambdaserverless.handler
+     Runtime: nodejs6.10
+     CodeUri: s3://staticcontentforsam/serverless-webapp-master.zip
+     Role: 'arn:aws:iam::896715882735:role/MyLambdaRole'      
+     Events:
+        getAZsAPI:
+        Type: Api
+        Properties:
+          Path: /getazs
+          Method: ANY
