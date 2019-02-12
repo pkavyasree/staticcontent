@@ -3,9 +3,8 @@ phases:
   install:
     commands:
        - npm install
+       - aws cloudformation package --template-file samTemplate.yaml --s3-bucket staticcontentforsam --output-template-file outputSamTemplate.yaml
        - aws s3 sync website/ "s3://staticcontentforsam"
-      
-      - aws cloudformation package --template-file samTemplate.yaml --s3-bucket staticcontentforsam --output-template-file outputSamTemplate.yaml
 artifacts:
  # type: zip
   files:
