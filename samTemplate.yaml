@@ -4,32 +4,33 @@ Resources:
   newtable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      AttributeDefinitions:
-        - AttributeName: EmailID
+       AttributeDefinitions:
+        - AttributeName: id
           AttributeType: S
-        - AttributeName: BloodGroup
-          AttributeType: S
-        - AttributeName: Designation
-          AttributeType: S
-        - AttributeName: FirstName
-          AttributeType: S 
-        - AttributeName: LastName
-          AttributeType: S  
+        - AttributeName: version
+          AttributeType: 'N'
       KeySchema:
-        - AttributeName: EmailID
+        - AttributeName: id
           KeyType: HASH
+        - AttributeName: version
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
   newlambdaserverless:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: newlambdaserverless.handler
       Runtime: nodejs6.10
       CodeUri: s3://staticcontentforsam/serverless-webapp-master.zip
-      Role: 'arn:aws:iam::896715882735:role/MyLambdaRole'
-      
-      Events:
-        Tablet1:
-          Type: DynamoDB
-          Properties:
-            Stream: !GetAtt newtable.StreamArn
-            StartingPosition: TRIM_HORIZON
-            BatchSize: 10
+	  Role: 'arn:aws:iam::896715882735:role/MyLambdaRole'
+  
+    Events:
+      Tablet1:
+      Type: DynamoDB
+      Properties:
+          Stream: !GetAtt newtable.StreamArn
+          StartingPosition: TRIM_HORIZON
+          BatchSize: 10		  
