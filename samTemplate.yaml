@@ -4,9 +4,9 @@ Resources:
   newtable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-	   KeySchema:
-        - AttributeName: EmailID
-          KeyType: HASH
+       KeySchema:
+          - AttributeName: EmailID
+            KeyType: HASH
       
   newlambdaserverless:
     Type: 'AWS::Serverless::Function'
